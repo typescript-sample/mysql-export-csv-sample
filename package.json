@@ -1,0 +1,36 @@
+{
+  "name": "typescript-starter",
+  "version": "1.0.0",
+  "description": "A basic typescript app starter for newbies in 2022.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node dist/app",
+    "build": "webpack --config webpack.config.js",
+    "dev": "nodemon --exec ts-node-dev src/app",
+    "prod": "node dist/app",
+    "compile": "rimraf ./build && tsc",
+    "start:dev": "nodemon",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config-plus": "^0.0.9",
+    "io-one": "^0.3.0",
+    "logger-core": "^0.3.3",
+    "mysql2": "^3.23.1",
+    "mysql2-core": "^0.3.6",
+    "onecore": "^0.5.17"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "ts-loader": "^9.6.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3",
+    "webpack": "^5.108.4",
+    "webpack-bundle-analyzer": "^5.3.1",
+    "webpack-cli": "^7.2.1",
+    "webpack-dev-server": "^6.0.0"
+  }
+}
