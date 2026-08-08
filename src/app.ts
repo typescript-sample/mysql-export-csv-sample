@@ -23,7 +23,7 @@ async function exportCSV() {
 
   const logger = createLogger(cfg.log, undefined, undefined, errorWriter.write, logWriter.write)
 
-  const dir = "./dest_dir/"
+  const dir = cfg.file.path
   const filename = getPrefix(cfg.file.prefix, now) + "_" + timeToString(now) + ".csv"
   const streamWrite = createWriteStream(dir, filename)
   const writer = new FileWriter(streamWrite)
