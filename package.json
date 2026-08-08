@@ -4,7 +4,7 @@
   "description": "A basic typescript app starter for newbies in 2022.",
   "main": "app.js",
   "scripts": {
-    "start": "node dist/app",
+    "start": "nodemon --exec ts-node-dev src/app",
     "build": "webpack --config webpack.config.js",
     "dev": "nodemon --exec ts-node-dev src/app",
     "prod": "node dist/app",
@@ -16,12 +16,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "config-plus": "^0.0.9",
-    "io-one": "^0.3.0",
-    "logger-core": "^0.3.3",
-    "mysql2": "^3.23.1",
-    "mysql2-core": "^0.3.6",
-    "onecore": "^0.5.17"
+    "config-plus": "^0.1.1",
+    "export-kit": "^0.1.2",
+    "logger-core": "^0.5.1",
+    "mysql2": "^3.23.2",
+    "mysql2-core": "^0.3.8",
+    "onecore": "^0.6.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14",

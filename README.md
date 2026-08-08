@@ -11,7 +11,7 @@ Instead of using a large framework, each library has a single responsibility and
 - **config-plus** — Configuration management
 - **logger-core** — Logging
 - **mysql2-core** — MySQL provider
-- **io-one** — File formatting and writing
+- **export-kit** — File formatting and writing
 
 The application itself contains almost no infrastructure code because those responsibilities are delegated to reusable libraries.
 
@@ -30,7 +30,7 @@ The application itself contains almost no infrastructure code because those resp
                    │
       ┌────────────┼────────────┐
       ▼            ▼            ▼
-config-plus    logger-core    io-one
+config-plus    logger-core    export-kit
       │            │            │
       └────────────┴────────────┘
                    │
@@ -54,14 +54,14 @@ Application Objects
         │
         ▼
 DelimiterFormatter
-    (io-one)
+    (export-kit)
         │
         ▼
    CSV Records
         │
         ▼
     FileWriter
-     (io-one)
+   (export-kit)
         │
         ▼
     users.csv
@@ -71,12 +71,12 @@ DelimiterFormatter
 
 # Libraries
 
-| Library     | Responsibility                                       |
-| ----------- |------------------------------------------------------|
-| config-plus | Load and merge application configuration             |
-| logger-core | Logging                                              |
-| mysql2-core | MySQL implementation of sql-core and streaming export|
-| io-one      | CSV formatting, file writing and workflow utilities  |
+| Library     | Responsibility                                        |
+| ----------- | ----------------------------------------------------- |
+| config-plus | Load and merge application configuration              |
+| logger-core | Logging                                               |
+| mysql2-core | MySQL implementation of sql-core and streaming export |
+| export-kit  | CSV formatting, file writing and workflow utilities   |
 
 Each library focuses on a single responsibility, making the application easier to understand and maintain.
 
@@ -122,14 +122,14 @@ This sample demonstrates how those concerns can be solved by composing reusable 
             logger-core
 
 
-              Database
+             Database
                  │
             mysql2-core
 
 
             File Output
                  │
-               io-one
+             export-kit
 ```
 
 Each library can evolve independently while remaining easy to combine.
@@ -150,7 +150,7 @@ For example:
 
 Because every driver exposes a different streaming API, streaming export is implemented in the corresponding provider library.
 
-`io-one` remains completely database-independent.
+`export-kit` remains completely database-independent.
 
 Its responsibility is simply to format objects and write files.
 
@@ -172,13 +172,13 @@ Configuration can be overridden for different environments without modifying app
 
 # Logging
 
-The sample uses **logger-core** together with **io-one**.
+The sample uses **logger-core** together with **export-kit**.
 
 ```ts
 const logWriter = new LogWriter(logFile, logDirectory)
 ```
 
-Log files are automatically timestamped using the workflow utilities provided by **io-one**.
+Log files are automatically timestamped using the workflow utilities provided by **export-kit**.
 
 Example:
 
@@ -226,7 +226,7 @@ The export pipeline remains unchanged.
 
 # Workflow Utilities
 
-This sample also demonstrates why **io-one** contains a small set of workflow utilities.
+This sample also demonstrates why **export-kit** contains a small set of workflow utilities.
 
 ```ts
 const filename = getPrefix("user_", now) + "_" + timeToString(now) + ".csv"
@@ -287,8 +287,7 @@ This sample demonstrates the design philosophy of the **core-ts** ecosystem.
 - **logger-core** – Lightweight logging
 - **mysql2-core** – MySQL implementation of sql-core
 - **sql-core** – Standard SQL abstraction
-- **io-one** – File I/O, CSV and fixed-length formatting
-
+- **export-kit** – File I/O, CSV and fixed-length formatting
 
 ---
 

@@ -1,4 +1,4 @@
-import { FixedLengthAttributes } from "onecore"
+import { Attributes } from "onecore"
 
 export interface User {
   id: string
@@ -9,7 +9,7 @@ export interface User {
   createdDate?: string
 }
 
-export const userModel: FixedLengthAttributes = {
+export const userModel: Attributes = {
   id: {
     key: true,
     length: 11,
