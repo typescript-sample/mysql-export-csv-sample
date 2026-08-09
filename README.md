@@ -30,7 +30,7 @@ The application itself contains almost no infrastructure code because those resp
                    │
       ┌────────────┼────────────┐
       ▼            ▼            ▼
-config-plus    logger-core    export-kit
+config-plus   logger-core   export-kit
       │            │            │
       └────────────┴────────────┘
                    │
@@ -64,7 +64,7 @@ Application Objects
    (export-kit)
         │
         ▼
-    users.csv
+user_YYYYMMDD_HHMMSS.csv
 ```
 
 ---
@@ -79,6 +79,20 @@ Application Objects
 | [`export-kit`](https://www.npmjs.com/package/export-kit)   | CSV formatting, file writing and workflow utilities  |
 
 Each library focuses on a single responsibility, making the application easier to understand and maintain.
+
+---
+
+# Project Structure
+
+```text
+src
+│
+├── app.ts                 # Application bootstrap and Dependency composition
+├── config.ts              # Application configuration
+│
+└── user/
+    └── index.ts
+```
 
 ---
 
@@ -129,7 +143,7 @@ This sample demonstrates how those concerns can be solved by composing reusable 
 
             File Output
                  │
-             export-kit
+            export-kit
 ```
 
 Each library can evolve independently while remaining easy to combine.
@@ -168,14 +182,40 @@ const cfg = merge(config, process.env, environments, process.env.ENV)
 
 Configuration can be overridden for different environments without modifying application code.
 
+```text
+          Default Configuration
+                   │
+                   ▼
+Environment Configuration (SIT, UAT, PRD)
+                   │
+                   ▼
+   Environment Variables (process.env)
+                   │
+                   ▼
+          Final Configuration
+```
+
 ---
 
 # Logging
 
 The sample uses [**logger-core**](https://www.npmjs.com/package/logger-core) together with [**export-kit**](https://www.npmjs.com/package/export-kit).
 
+[`logger-core`](https://www.npmjs.com/package/logger-core) provides structured logging. Responsible for:
+* application logs
+* error logs
+* progress logging
+ 
 ```ts
-const logWriter = new LogWriter(logFile, logDirectory)
+import { getPrefix, LogWriter, timeToString } from "export-kit"
+import { createFileLogger } from "logger-core"
+
+const now = new Date()
+
+const errorWriter = new LogWriter(getPrefix("error_", now) + "_" + timeToString(now) + ".txt", "./log/")
+const logWriter = new LogWriter(getPrefix("log_", now) + "_" + timeToString(now) + ".txt", "./log/")
+
+const logger = createFileLogger(cfg.log, errorWriter.write, logWriter.write)
 ```
 
 Log files are automatically timestamped using the workflow utilities provided by [**export-kit**](https://www.npmjs.com/package/export-kit).
@@ -183,7 +223,8 @@ Log files are automatically timestamped using the workflow utilities provided by
 Example:
 
 ```text
-EXPORT_20260716_143010.log
+log_20260808_175912.txt
+error_20260808_175912.txt
 ```
 
 ---
@@ -193,7 +234,7 @@ EXPORT_20260716_143010.log
 Objects are converted into CSV using metadata.
 
 ```ts
-const formatter = new DelimiterFormatter<User>(",", userAttributes)
+const formatter = new CSVFormatter<User>(userModel, ",")
 ```
 
 The exporter knows nothing about CSV.
@@ -209,9 +250,9 @@ Each component has a single responsibility.
 The exporter is reusable for any entity.
 
 ```ts
-const exporter = new Exporter<User>(connection, queryBuilder.build, formatter.format, writer.write, writer.end, userAttributes)
+const exporter = new Exporter<User>(connection, queryBuilder.build, formatter.format, writer.write, writer.end, userModel)
 
-await exporter.export()
+const total = await exporter.export()
 ```
 
 To export another table, simply replace:
@@ -246,11 +287,11 @@ npm start
 After execution:
 
 ```text
-output/
-├── user.csv
-└── logs/
-    ├── EXPORT_20260716_143010.log
-    └── ERROR_20260716_143010.log
+out_dir/
+  ├── user_20260808_175912.csv
+log/
+  ├── log_20260808_175912.txt
+  └── error_20260808_175912.txt
 ```
 
 ---
