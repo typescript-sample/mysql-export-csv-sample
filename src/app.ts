@@ -29,7 +29,7 @@ async function exportCSV() {
   const writer = new FileWriter(streamWrite)
   const connection = mysql.createConnection(cfg.db)
 
-  const formatter = new CSVFormatter<User>(",", userModel)
+  const formatter = new CSVFormatter<User>(userModel, ",")
   const queryBuilder = new QueryBuilder()
 
   logger.info(`Start to export '${path.join(dir, filename)}' file`)
