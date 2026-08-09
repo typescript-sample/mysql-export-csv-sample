@@ -12,7 +12,7 @@ const cfg = merge(config, process.env, environments, process.env.ENV)
 export class QueryBuilder {
   build = (): Promise<Statement> =>
     Promise.resolve({
-      query: "SELECT * FROM userexport",
+      query: "select * from userexport",
     })
 }
 
