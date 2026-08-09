@@ -1,6 +1,6 @@
 import { merge } from "config-plus"
 import { createWriteStream, CSVFormatter, FileWriter, getPrefix, LogWriter, timeToString } from "export-kit"
-import { createLogger } from "logger-core"
+import { createFileLogger } from "logger-core"
 import mysql from "mysql2"
 import { Exporter, Statement } from "mysql2-core"
 import path from "path"
@@ -21,7 +21,7 @@ async function exportCSV() {
   const errorWriter = new LogWriter(getPrefix(cfg.error.prefix, now) + "_" + timeToString(now) + cfg.error.suffix, cfg.error.directory)
   const logWriter = new LogWriter(getPrefix(cfg.info.prefix, now) + "_" + timeToString(now) + cfg.info.suffix, cfg.info.directory)
 
-  const logger = createLogger(cfg.log, undefined, undefined, errorWriter.write, logWriter.write)
+  const logger = createFileLogger(cfg.log, errorWriter.write, logWriter.write)
 
   const dir = cfg.file.path
   const filename = getPrefix(cfg.file.prefix, now) + "_" + timeToString(now) + ".csv"

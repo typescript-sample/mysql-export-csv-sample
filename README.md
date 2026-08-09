@@ -1,6 +1,6 @@
 # mysql-export-csv-sample
 
-> Demonstrates how the **core-ts** ecosystem can be composed to build a production-style batch export application.
+> Demonstrates how the [**core-ts**](https://github.com/core-ts) ecosystem can be composed to build a production-style batch export application.
 
 This project is **not simply a CSV export example**.
 
@@ -8,10 +8,10 @@ It demonstrates how several small, focused libraries work together to build a co
 
 Instead of using a large framework, each library has a single responsibility and can be reused independently.
 
-- **config-plus** — Configuration management
-- **logger-core** — Logging
-- **mysql2-core** — MySQL provider
-- **export-kit** — File formatting and writing
+- [**config-plus**](https://www.npmjs.com/package/config-plus) — Configuration management
+- [**logger-core**](https://www.npmjs.com/package/logger-core) — Logging
+- [**mysql2-core**](https://www.npmjs.com/package/mysql2-core) — MySQL provider
+- [**export-kit**](https://www.npmjs.com/package/export-kit) — File formatting and writing
 
 The application itself contains almost no infrastructure code because those responsibilities are delegated to reusable libraries.
 
@@ -47,14 +47,14 @@ config-plus    logger-core    export-kit
         │
         ▼
  Streaming Export
-   (mysql2-core)
+  (mysql2-core)
         │
         ▼
 Application Objects
         │
         ▼
-DelimiterFormatter
-    (export-kit)
+   CSVFormatter
+   (export-kit)
         │
         ▼
    CSV Records
@@ -71,12 +71,12 @@ DelimiterFormatter
 
 # Libraries
 
-| Library     | Responsibility                                        |
-| ----------- | ----------------------------------------------------- |
-| config-plus | Load and merge application configuration              |
-| logger-core | Logging                                               |
-| mysql2-core | MySQL implementation of sql-core and streaming export |
-| export-kit  | CSV formatting, file writing and workflow utilities   |
+| Library     | Responsibility                                       |
+| ----------- |------------------------------------------------------|
+| [`config-plus`](https://www.npmjs.com/package/config-plus) | Load and merge application configuration             |
+| [`logger-core`](https://www.npmjs.com/package/logger-core) | Logging                                              |
+| [`mysql2-core`](https://www.npmjs.com/package/mysql2-core) | MySQL implementation of sql-core and streaming export|
+| [`export-kit`](https://www.npmjs.com/package/export-kit)   | CSV formatting, file writing and workflow utilities  |
 
 Each library focuses on a single responsibility, making the application easier to understand and maintain.
 
@@ -122,9 +122,9 @@ This sample demonstrates how those concerns can be solved by composing reusable 
             logger-core
 
 
-             Database
+              Database
                  │
-            mysql2-core
+             mysql2-core
 
 
             File Output
@@ -142,15 +142,15 @@ Database streaming depends on the underlying database driver.
 
 For example:
 
-- MySQL uses **mysql2**
-- PostgreSQL uses **pg**
-- Oracle uses **oracledb**
-- SQL Server uses **mssql**
+- MySQL uses [**mysql2**](https://www.npmjs.com/package/mysql2)
+- PostgreSQL uses [**pg**](https://www.npmjs.com/package/pg)
+- Oracle uses [**oracledb**](https://www.npmjs.com/package/oracledb)
+- SQL Server uses [**mssql**](https://www.npmjs.com/package/mssql)
 - SQLite uses its own driver
 
 Because every driver exposes a different streaming API, streaming export is implemented in the corresponding provider library.
 
-`export-kit` remains completely database-independent.
+[`export-kit`](https://www.npmjs.com/package/export-kit) remains completely database-independent.
 
 Its responsibility is simply to format objects and write files.
 
@@ -160,7 +160,7 @@ This separation keeps both libraries focused and reusable.
 
 # Configuration
 
-Application configuration is managed by **config-plus**.
+Application configuration is managed by [**config-plus**](https://www.npmjs.com/package/config-plus).
 
 ```ts
 const cfg = merge(config, process.env, environments, process.env.ENV)
@@ -172,13 +172,13 @@ Configuration can be overridden for different environments without modifying app
 
 # Logging
 
-The sample uses **logger-core** together with **export-kit**.
+The sample uses [**logger-core**](https://www.npmjs.com/package/logger-core) together with [**export-kit**](https://www.npmjs.com/package/export-kit).
 
 ```ts
 const logWriter = new LogWriter(logFile, logDirectory)
 ```
 
-Log files are automatically timestamped using the workflow utilities provided by **export-kit**.
+Log files are automatically timestamped using the workflow utilities provided by [**export-kit**](https://www.npmjs.com/package/export-kit).
 
 Example:
 
@@ -226,7 +226,7 @@ The export pipeline remains unchanged.
 
 # Workflow Utilities
 
-This sample also demonstrates why **export-kit** contains a small set of workflow utilities.
+This sample also demonstrates why [**export-kit**](https://www.npmjs.com/package/export-kit) contains a small set of workflow utilities.
 
 ```ts
 const filename = getPrefix("user_", now) + "_" + timeToString(now) + ".csv"
@@ -283,11 +283,12 @@ This sample demonstrates the design philosophy of the **core-ts** ecosystem.
 
 # Related Projects
 
-- **config-plus** – Configuration management
-- **logger-core** – Lightweight logging
-- **mysql2-core** – MySQL implementation of sql-core
-- **sql-core** – Standard SQL abstraction
-- **export-kit** – File I/O, CSV and fixed-length formatting
+- [**config-plus**](https://www.npmjs.com/package/config-plus) – Configuration management
+- [**logger-core**](https://www.npmjs.com/package/logger-core) – Lightweight logging
+- [**mysql2-core**](https://www.npmjs.com/package/mysql2-core) – MySQL implementation of sql-core
+- [**sql-core**](https://www.npmjs.com/package/sql-core) – Standard SQL abstraction
+- [**export-kit**](https://www.npmjs.com/package/export-kit) – File I/O, CSV and fixed-length formatting
+- [**import-service**](https://www.npmjs.com/package/import-service) – Generic enterprise import framework with validation, mapping, batching and error reporting
 
 ---
 
