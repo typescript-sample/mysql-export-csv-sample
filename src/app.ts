@@ -10,10 +10,7 @@ import { User, userSchema } from "./user"
 const cfg = merge(config, process.env, environments, process.env.ENV)
 
 export class QueryBuilder {
-  build = (): Promise<Statement> =>
-    Promise.resolve({
-      query: select("userexport", userSchema),
-    })
+  build = (): Promise<Statement> => Promise.resolve({ query: select("userexport", userSchema) })
 }
 
 async function exportData() {
@@ -34,8 +31,10 @@ async function exportData() {
 
   try {
     logger.info(`Start to export '${path.join(dir, filename)}' file`)
+    writer.write(cfg.file.header)
     const exporter = new Exporter<User>(connection, filename, queryBuilder.build, formatter.format, writer.write, writer.end, userSchema, logger.info, 3)
     const total = await exporter.export()
+
     logger.info(`Export '${path.join(dir, filename)}' file. Total: ${total}`)
   } catch (err) {
     logger.error(`Error when export "${path.join(dir, filename)}" file. Details: ${toString(err)}`)

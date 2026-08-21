@@ -11,6 +11,7 @@ export const config = {
   file: {
     path: "./out_dir/",
     prefix: "user_",
+    header: "id,username,email,phone,status,createddate\n",
   },
   db: {
     host: "127.0.0.1",
