@@ -9,7 +9,7 @@ export interface User {
   createdDate?: string
 }
 
-export const userModel: Attributes = {
+export const userSchema: Attributes = {
   id: {
     key: true,
     length: 11,

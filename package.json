@@ -17,10 +17,10 @@
   "license": "ISC",
   "dependencies": {
     "config-plus": "^0.1.1",
-    "export-kit": "^0.1.4",
+    "export-kit": "^0.2.2",
     "logger-core": "^0.5.2",
-    "mysql2": "^3.23.2",
-    "mysql2-core": "^0.3.8",
+    "mysql2": "^3.23.4",
+    "mysql2-core": "^0.3.10",
     "onecore": "^0.6.2"
   },
   "devDependencies": {
